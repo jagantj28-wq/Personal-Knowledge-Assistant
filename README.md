@@ -15,7 +15,9 @@
 
 ### 🌐 **[Click Here for Public Live Demo](https://jagantj28-wq.github.io/Personal-Knowledge-Assistant/)** 🚀
 
-[Live Demo](https://jagantj28-wq.github.io/Personal-Knowledge-Assistant/) • [Features](#-key-features) • [Academic Package](#-academic--viva-defense-package) • [Architecture](#-system-architecture) • [Quickstart](#-quickstart-guide) • [API Docs](#-api-specification)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/jagantj28-wq/Personal-Knowledge-Assistant)
+
+[Live Demo](https://jagantj28-wq.github.io/Personal-Knowledge-Assistant/) • [Deploy to Render](#-deploy-to-render) • [Features](#-key-features) • [Academic Package](#-academic--viva-defense-package) • [Architecture](#-system-architecture) • [Quickstart](#-quickstart-guide) • [API Docs](#-api-specification)
 
 </div>
 
@@ -139,6 +141,23 @@ npm run dev
 ```
 
 Open **http://localhost:5173** in your browser 🚀
+
+---
+
+## ☁️ Deploy to Render (Cloud Hosting)
+
+You can deploy the complete system to **Render** with 1 click:
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/jagantj28-wq/Personal-Knowledge-Assistant)
+
+### Manual Deployment on Render:
+1. Go to [Render Dashboard](https://dashboard.render.com/) and sign in with GitHub.
+2. Click **New +** → **Blueprint**.
+3. Connect your repository: `https://github.com/jagantj28-wq/Personal-Knowledge-Assistant`.
+4. Render will automatically detect `render.yaml` and provision:
+   - **Backend Web Service** (FastAPI on Python 3.11)
+   - **Frontend Static Site** (React 18 + Vite)
+5. Click **Apply** — your cloud app will be live with a free `https://*.onrender.com` URL!
 
 ---
 

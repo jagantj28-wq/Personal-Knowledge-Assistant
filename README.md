@@ -13,7 +13,9 @@
 
 **An academic and portfolio-grade multi-modal AI personal knowledge base and "Second Brain" combining Hybrid Retrieval-Augmented Generation (RAG), Cognitive Spaced Repetition (SuperMemo SM-2), Knowledge Graphs, and AI Assessment Quizzes.**
 
-[Features](#-key-features) • [Academic Package](#-academic--viva-defense-package) • [Architecture](#-system-architecture) • [Quickstart](#-quickstart-guide) • [Evaluation Demo](#-instant-viva--evaluator-demo) • [API Docs](#-api-specification)
+### 🌐 **[Click Here for Public Live Demo](https://jagantj28-wq.github.io/Personal-Knowledge-Assistant/)** 🚀
+
+[Live Demo](https://jagantj28-wq.github.io/Personal-Knowledge-Assistant/) • [Features](#-key-features) • [Academic Package](#-academic--viva-defense-package) • [Architecture](#-system-architecture) • [Quickstart](#-quickstart-guide) • [API Docs](#-api-specification)
 
 </div>
 

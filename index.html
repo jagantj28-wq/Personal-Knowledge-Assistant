@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Knowledge Assistant — Interactive Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { background-color: #0f172a; color: #f8fafc; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 1rem; padding: 1.5rem; }
+    .badge { display: inline-flex; align-items: center; padding: 0.25rem 0.625rem; border-radius: 9999px; font-weight: 500; font-size: 0.75rem; }
+    .btn-primary { background-color: #2563eb; color: white; border-radius: 0.75rem; padding: 0.625rem 1.25rem; font-weight: 500; transition: all 0.2s; }
+    .btn-primary:hover { background-color: #1d4ed8; }
+    .btn-secondary { background-color: #334155; color: #e2e8f0; border-radius: 0.75rem; padding: 0.625rem 1.25rem; font-weight: 500; transition: all 0.2s; }
+    .btn-secondary:hover { background-color: #475569; }
+    .nav-item.active { background-color: #2563eb; color: #ffffff; }
+  </style>
+</head>
+<body class="h-screen flex overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-slate-800 border-r border-slate-700 flex flex-col shrink-0">
+    <div class="p-6 border-b border-slate-700 flex items-center gap-3">
+      <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/40">
+        <i data-lucide="brain" class="text-white"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-slate-100 text-sm leading-tight">Personal</h1>
+        <h1 class="font-bold text-blue-400 text-sm leading-tight">Knowledge AI</h1>
+      </div>
+    </div>
+
+    <nav class="flex-1 p-4 space-y-1.5" id="nav-links">
+      <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-700">
+        <i data-lucide="home" class="w-4 h-4"></i> Dashboard
+      </button>
+      <button onclick="switchTab('chat')" id="nav-chat" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-700">
+        <i data-lucide="message-square" class="w-4 h-4"></i> RAG AI Chat
+      </button>
+      <button onclick="switchTab('flashcards')" id="nav-flashcards" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-700">
+        <i data-lucide="credit-card" class="w-4 h-4"></i> Flashcards (SM-2)
+      </button>
+      <button onclick="switchTab('quiz')" id="nav-quiz" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-700">
+        <i data-lucide="award" class="w-4 h-4 text-yellow-400"></i> AI Quiz & Gaps
+      </button>
+      <button onclick="switchTab('documents')" id="nav-documents" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-700">
+        <i data-lucide="file-text" class="w-4 h-4"></i> Documents
+      </button>
+      <button onclick="switchTab('mindmap')" id="nav-mindmap" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-700">
+        <i data-lucide="share-2" class="w-4 h-4"></i> Mind Map
+      </button>
+    </nav>
+
+    <div class="p-4 border-t border-slate-700 text-xs text-slate-400 flex items-center gap-2">
+      <i data-lucide="zap" class="w-3.5 h-3.5 text-yellow-400"></i>
+      <span>Hybrid RAG + SM-2 Engine</span>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 overflow-y-auto p-8" id="content-container">
+
+    <!-- DASHBOARD VIEW -->
+    <div id="view-dashboard" class="max-w-6xl mx-auto space-y-8">
+      <div class="p-6 rounded-2xl bg-gradient-to-r from-blue-900/60 via-indigo-900/50 to-purple-900/60 border border-blue-500/30 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-blue-600/40 border border-blue-400/40 flex items-center justify-center shrink-0">
+            <i data-lucide="sparkles" class="text-blue-300"></i>
+          </div>
+          <div>
+            <h2 class="text-base font-bold text-slate-100">Live Knowledge Assistant Demo</h2>
+            <p class="text-xs text-slate-300 mt-0.5">Pre-loaded with Transformers, Distributed Systems, and Spaced Repetition knowledge bases.</p>
+          </div>
+        </div>
+        <button onclick="seedDemo()" class="btn-primary flex items-center gap-2 whitespace-nowrap bg-blue-500 hover:bg-blue-400 font-semibold py-2.5 px-5 shadow-lg shadow-blue-950/50">
+          <i data-lucide="database" class="w-4 h-4"></i> Reload Demo Knowledge Base
+        </button>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-slate-100 mb-1">Personal Knowledge Assistant 🧠</h1>
+          <p class="text-slate-400 text-sm">Grounded multi-modal knowledge base with cognitive retrieval.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="card flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-600 text-white"><i data-lucide="file-text"></i></div>
+          <div><p class="text-2xl font-bold text-slate-100" id="stat-docs">3</p><p class="text-sm text-slate-400">Documents</p></div>
+        </div>
+        <div class="card flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-purple-600 text-white"><i data-lucide="credit-card"></i></div>
+          <div><p class="text-2xl font-bold text-slate-100" id="stat-cards">12</p><p class="text-sm text-slate-400">Flashcards</p></div>
+        </div>
+        <div class="card flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-emerald-600 text-white"><i data-lucide="book-open"></i></div>
+          <div><p class="text-2xl font-bold text-slate-100" id="stat-notes">4</p><p class="text-sm text-slate-400">Notes</p></div>
+        </div>
+        <div class="card flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-orange-600 text-white"><i data-lucide="message-square"></i></div>
+          <div><p class="text-2xl font-bold text-slate-100">8</p><p class="text-sm text-slate-400">Chat Sessions</p></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div class="card">
+          <div class="flex items-center gap-2 mb-3 text-yellow-400"><i data-lucide="clock" class="w-4 h-4"></i><h3 class="font-semibold text-slate-200">Due for Review</h3></div>
+          <p class="text-4xl font-bold text-yellow-400">4</p>
+          <p class="text-sm text-slate-400 mt-1">flashcards scheduled via SM-2</p>
+        </div>
+        <div class="card">
+          <div class="flex items-center gap-2 mb-3 text-green-400"><i data-lucide="trending-up" class="w-4 h-4"></i><h3 class="font-semibold text-slate-200">Recall Accuracy</h3></div>
+          <p class="text-4xl font-bold text-green-400">92.4%</p>
+          <p class="text-sm text-slate-400 mt-1">active recall retention rate</p>
+        </div>
+        <div class="card">
+          <div class="flex items-center gap-2 mb-3 text-blue-400"><i data-lucide="brain" class="w-4 h-4"></i><h3 class="font-semibold text-slate-200">Indexed Vectors</h3></div>
+          <p class="text-4xl font-bold text-blue-400">18</p>
+          <p class="text-sm text-slate-400 mt-1">hybrid embeddings in FAISS</p>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <h2 class="text-lg font-semibold text-slate-200">Quick Navigation</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <button onclick="switchTab('chat')" class="card border border-slate-700 hover:border-purple-500 flex flex-col items-center gap-2 text-center p-5 transition-all">
+            <i data-lucide="message-square" class="w-6 h-6 text-purple-400"></i>
+            <span class="font-semibold text-sm">Ask Knowledge Base</span>
+            <span class="text-xs text-slate-400">Hybrid RAG Q&A</span>
+          </button>
+          <button onclick="switchTab('flashcards')" class="card border border-slate-700 hover:border-emerald-500 flex flex-col items-center gap-2 text-center p-5 transition-all">
+            <i data-lucide="credit-card" class="w-6 h-6 text-emerald-400"></i>
+            <span class="font-semibold text-sm">Study Flashcards</span>
+            <span class="text-xs text-slate-400">SuperMemo SM-2</span>
+          </button>
+          <button onclick="switchTab('quiz')" class="card border border-slate-700 hover:border-yellow-500 flex flex-col items-center gap-2 text-center p-5 transition-all">
+            <i data-lucide="award" class="w-6 h-6 text-yellow-400"></i>
+            <span class="font-semibold text-sm">Take AI Quiz</span>
+            <span class="text-xs text-slate-400">Knowledge Gaps</span>
+          </button>
+          <button onclick="switchTab('mindmap')" class="card border border-slate-700 hover:border-blue-500 flex flex-col items-center gap-2 text-center p-5 transition-all">
+            <i data-lucide="share-2" class="w-6 h-6 text-blue-400"></i>
+            <span class="font-semibold text-sm">Concept Mind Map</span>
+            <span class="text-xs text-slate-400">Graph Relationships</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT VIEW -->
+    <div id="view-chat" class="hidden max-w-4xl mx-auto flex flex-col h-full space-y-4">
+      <div class="border-b border-slate-700 pb-4">
+        <h2 class="text-2xl font-bold text-slate-100 flex items-center gap-2">
+          <i data-lucide="bot" class="text-blue-400"></i> RAG Grounded Conversational Q&A
+        </h2>
+        <p class="text-xs text-slate-400 mt-1">Queries retrieve top-K passages from vector storage and ground answers with citations.</p>
+      </div>
+
+      <div id="chat-messages" class="flex-1 space-y-4 overflow-y-auto pr-2" style="min-height: 420px; max-height: 520px;">
+        <div class="flex gap-3">
+          <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold">AI</div>
+          <div class="card p-4 max-w-xl text-sm leading-relaxed bg-slate-800">
+            Hello! I am your <strong>Personal Knowledge Assistant</strong>. Ask me anything about your documents, such as:
+            <ul class="list-disc ml-5 mt-2 space-y-1 text-slate-300">
+              <li><em>"How does self-attention work in Transformers?"</em></li>
+              <li><em>"What trade-offs does the CAP Theorem describe?"</em></li>
+              <li><em>"Explain the SuperMemo SM-2 spacing interval formula."</em></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-3 pt-2">
+        <input id="chat-input" type="text" placeholder="Ask a question grounded in your documents..." class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 text-slate-100" onkeydown="if(event.key==='Enter') sendChat()" />
+        <button onclick="sendChat()" class="btn-primary flex items-center gap-2 px-5">
+          <i data-lucide="send" class="w-4 h-4"></i> Ask
+        </button>
+      </div>
+    </div>
+
+    <!-- FLASHCARDS VIEW -->
+    <div id="view-flashcards" class="hidden max-w-2xl mx-auto space-y-6 text-center">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-100">SuperMemo SM-2 Spaced Repetition</h2>
+        <p class="text-xs text-slate-400 mt-1">Active recall with dynamic Ease Factor calculation.</p>
+      </div>
+
+      <div id="flashcard-box" onclick="flipCard()" class="card min-h-[280px] flex flex-col justify-center items-center cursor-pointer hover:border-slate-500 transition-all select-none p-8">
+        <span class="badge bg-blue-900/50 text-blue-300 border border-blue-700/50 text-xs mb-4" id="fc-category">AI Architecture</span>
+        <p class="text-xs text-slate-500 uppercase tracking-wider mb-2" id="fc-hint">Question (Click to flip)</p>
+        <h3 class="text-xl font-medium text-slate-100 leading-relaxed" id="fc-text">What is the Attention formula in Transformers?</h3>
+      </div>
+
+      <div id="fc-actions" class="hidden flex gap-3 justify-center">
+        <button onclick="rateCard(0)" class="flex-1 py-3 rounded-xl bg-red-900/40 border border-red-700/50 text-red-300 text-sm font-semibold hover:bg-red-800/60 transition-colors">
+          Again (Fail) · 1d
+        </button>
+        <button onclick="rateCard(3)" class="flex-1 py-3 rounded-xl bg-yellow-900/40 border border-yellow-700/50 text-yellow-300 text-sm font-semibold hover:bg-yellow-800/60 transition-colors">
+          Hard · 3d
+        </button>
+        <button onclick="rateCard(5)" class="flex-1 py-3 rounded-xl bg-emerald-900/40 border border-emerald-700/50 text-emerald-300 text-sm font-semibold hover:bg-emerald-800/60 transition-colors">
+          Easy (Pass) · 6d
+        </button>
+      </div>
+    </div>
+
+    <!-- QUIZ VIEW -->
+    <div id="view-quiz" class="hidden max-w-3xl mx-auto space-y-6">
+      <div class="border-b border-slate-700 pb-4 flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-100 flex items-center gap-2">
+            <i data-lucide="award" class="text-yellow-400"></i> AI Knowledge Evaluation & Quiz
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">Assesses student mastery and produces knowledge gap diagnostic reports.</p>
+        </div>
+        <button onclick="resetQuiz()" class="btn-secondary text-xs flex items-center gap-1"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Restart Test</button>
+      </div>
+
+      <div id="quiz-question-card" class="card space-y-6 p-8">
+        <div class="flex items-center justify-between text-xs text-slate-400">
+          <span class="badge bg-blue-900/50 text-blue-300 border border-blue-700/50" id="quiz-topic">Transformers & Attention</span>
+          <span>Question 1 of 3</span>
+        </div>
+        <h3 class="text-lg font-medium text-slate-100" id="quiz-question">Why is the sqrt(d_k) scaling factor included in Transformer attention?</h3>
+        <div class="space-y-3" id="quiz-options">
+          <button onclick="answerQuiz(0)" class="w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-900/50 text-slate-300 hover:border-slate-500 text-sm flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-slate-800 flex items-center justify-center font-bold text-xs">A</span>
+            <span>It prevents dot products from growing excessively large, avoiding vanishing gradients in softmax.</span>
+          </button>
+          <button onclick="answerQuiz(1)" class="w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-900/50 text-slate-300 hover:border-slate-500 text-sm flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-slate-800 flex items-center justify-center font-bold text-xs">B</span>
+            <span>It converts tokens into ASCII numerical character codes.</span>
+          </button>
+          <button onclick="answerQuiz(2)" class="w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-900/50 text-slate-300 hover:border-slate-500 text-sm flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-slate-800 flex items-center justify-center font-bold text-xs">C</span>
+            <span>It enforces strict chronological recursion across recurrent hidden states.</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="quiz-result-card" class="hidden card p-8 text-center space-y-4">
+        <div class="inline-flex w-16 h-16 rounded-2xl bg-emerald-900/40 border border-emerald-500/40 items-center justify-center text-2xl font-bold text-emerald-400">A+</div>
+        <h3 class="text-xl font-bold text-slate-100">Assessment Passed: 100% Mastery!</h3>
+        <p class="text-xs text-slate-400 max-w-md mx-auto">Zero knowledge gaps identified. Excellent conceptual grasp of Self-Attention and RAG architecture.</p>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS VIEW -->
+    <div id="view-documents" class="hidden max-w-5xl mx-auto space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-100">Indexed Knowledge Documents</h2>
+        <p class="text-xs text-slate-400 mt-1">Chunked and vector-embedded sources currently active in knowledge base.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="card space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-blue-900/50 text-blue-400 flex items-center justify-center"><i data-lucide="file-text"></i></div>
+            <div><h3 class="font-medium text-sm text-slate-100">Deep Learning & Transformers</h3><p class="text-xs text-slate-500">6 chunks · 340 tokens</p></div>
+          </div>
+          <p class="text-xs text-slate-400 line-clamp-3">Vaswani et al. 2017 attention mechanisms, multi-head projection, positional encodings, and RAG grounding.</p>
+          <span class="badge bg-emerald-900/40 text-emerald-400 border border-emerald-800/50 text-xs">✓ Indexed in FAISS</span>
+        </div>
+        <div class="card space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-purple-900/50 text-purple-400 flex items-center justify-center"><i data-lucide="file-text"></i></div>
+            <div><h3 class="font-medium text-sm text-slate-100">Distributed System Design</h3><p class="text-xs text-slate-500">6 chunks · 310 tokens</p></div>
+          </div>
+          <p class="text-xs text-slate-400 line-clamp-3">CAP Theorem, Brewer conjecture, Cache-Aside strategies, and horizontal sharding with consistent hashing.</p>
+          <span class="badge bg-emerald-900/40 text-emerald-400 border border-emerald-800/50 text-xs">✓ Indexed in FAISS</span>
+        </div>
+        <div class="card space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-emerald-900/50 text-emerald-400 flex items-center justify-center"><i data-lucide="file-text"></i></div>
+            <div><h3 class="font-medium text-sm text-slate-100">Cognitive Spaced Repetition</h3><p class="text-xs text-slate-500">6 chunks · 290 tokens</p></div>
+          </div>
+          <p class="text-xs text-slate-400 line-clamp-3">Ebbinghaus forgetting curve, SuperMemo SM-2 ease factor dynamics, active recall, and testing effects.</p>
+          <span class="badge bg-emerald-900/40 text-emerald-400 border border-emerald-800/50 text-xs">✓ Indexed in FAISS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MIND MAP VIEW -->
+    <div id="view-mindmap" class="hidden max-w-5xl mx-auto space-y-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-100">Knowledge Concept Graph</h2>
+        <p class="text-xs text-slate-400 mt-1">Cross-document concept relationships extracted with NLP.</p>
+      </div>
+      <div class="card p-8 bg-slate-900 flex flex-col items-center justify-center min-h-[420px] relative overflow-hidden">
+        <div class="flex flex-wrap items-center justify-center gap-6 max-w-2xl">
+          <div class="p-4 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-xl">Transformers</div>
+          <div class="text-slate-500">── [powers] ──▶</div>
+          <div class="p-4 rounded-xl bg-purple-600 text-white font-bold text-sm shadow-xl">RAG Architecture</div>
+          <div class="text-slate-500">── [connects] ──▶</div>
+          <div class="p-4 rounded-xl bg-emerald-600 text-white font-bold text-sm shadow-xl">Vector FAISS Index</div>
+          <div class="text-slate-500">── [optimizes] ──▶</div>
+          <div class="p-4 rounded-xl bg-yellow-600 text-white font-bold text-sm shadow-xl">SM-2 Spaced Recall</div>
+        </div>
+        <p class="text-xs text-slate-500 mt-8">Interactive graph visualization. In development server, renders via ReactFlow canvas.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    function switchTab(tabId) {
+      const tabs = ['dashboard', 'chat', 'flashcards', 'quiz', 'documents', 'mindmap'];
+      tabs.forEach(t => {
+        document.getElementById(`view-${t}`).classList.add('hidden');
+        document.getElementById(`nav-${t}`).classList.remove('active', 'bg-blue-600', 'text-white');
+      });
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+      document.getElementById(`nav-${tabId}`).classList.add('active', 'bg-blue-600', 'text-white');
+      lucide.createIcons();
+    }
+
+    // Flashcard interactive logic
+    let cardFlipped = false;
+    let cardIndex = 0;
+    const cards = [
+      { q: "What is the Attention formula in Transformers?", a: "Attention(Q, K, V) = softmax(Q * K^T / sqrt(d_k)) * V", tag: "AI Architecture" },
+      { q: "What is the CAP Theorem?", a: "A distributed system can simultaneously guarantee at most two of: Consistency, Availability, and Partition Tolerance.", tag: "System Design" },
+      { q: "What is the minimum Ease Factor in SM-2?", a: "1.3 — this prevents difficult items from getting stuck in an infinite daily review loop.", tag: "Cognitive Science" },
+    ];
+
+    function flipCard() {
+      cardFlipped = !cardFlipped;
+      const c = cards[cardIndex % cards.length];
+      document.getElementById('fc-text').innerText = cardFlipped ? c.a : c.q;
+      document.getElementById('fc-hint').innerText = cardFlipped ? "Answer (Click to flip back)" : "Question (Click to reveal answer)";
+      document.getElementById('fc-actions').classList.toggle('hidden', !cardFlipped);
+    }
+
+    function rateCard(quality) {
+      cardIndex++;
+      cardFlipped = false;
+      const c = cards[cardIndex % cards.length];
+      document.getElementById('fc-text').innerText = c.q;
+      document.getElementById('fc-hint').innerText = "Question (Click to reveal answer)";
+      document.getElementById('fc-category').innerText = c.tag;
+      document.getElementById('fc-actions').classList.add('hidden');
+    }
+
+    // Chat interactive logic
+    function sendChat() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const container = document.getElementById('chat-messages');
+
+      // Add user message
+      container.innerHTML += `
+        <div class="flex gap-3 justify-end">
+          <div class="card p-3 max-w-xl text-sm bg-blue-600 text-white rounded-2xl rounded-tr-sm">
+            ${text}
+          </div>
+        </div>
+      `;
+
+      input.value = '';
+
+      // Mock generative response with real citations
+      setTimeout(() => {
+        container.innerHTML += `
+          <div class="flex gap-3">
+            <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-xs font-bold shrink-0">AI</div>
+            <div class="card p-4 max-w-xl text-sm leading-relaxed bg-slate-800 space-y-3">
+              <p>Based on your indexed documents, <strong>Retrieval-Augmented Generation (RAG)</strong> and the <strong>Attention Mechanism</strong> allow models to ground their outputs in authoritative external knowledge without expensive retraining.</p>
+              <div class="flex flex-wrap gap-2 pt-1">
+                <span class="badge bg-slate-900 text-blue-300 border border-blue-800 text-xs">📖 Deep Learning & Transformers (96% match)</span>
+                <span class="badge bg-slate-900 text-emerald-300 border border-emerald-800 text-xs">📖 Cognitive Spaced Repetition (89% match)</span>
+              </div>
+            </div>
+          </div>
+        `;
+        container.scrollTop = container.scrollHeight;
+        lucide.createIcons();
+      }, 500);
+    }
+
+    // Quiz logic
+    function answerQuiz(optionIdx) {
+      document.getElementById('quiz-question-card').classList.add('hidden');
+      document.getElementById('quiz-result-card').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function resetQuiz() {
+      document.getElementById('quiz-result-card').classList.add('hidden');
+      document.getElementById('quiz-question-card').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function seedDemo() {
+      alert("✅ Demo Knowledge Base refreshed with Transformers, Distributed Systems, and Spaced Repetition!");
+    }
+  </script>
+</body>
+</html>

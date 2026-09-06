@@ -2,6 +2,11 @@
 
 ## PROJECT TITLE: Personal Knowledge Assistant — Multi-Modal Second Brain Powered by Hybrid Retrieval-Augmented Generation (RAG) and Spaced Repetition (SM-2)
 
+**Author & Project Lead:** JAGAN T. JIJU  
+**Repository:** [jagantj28-wq/Personal-Knowledge-Assistant](https://github.com/jagantj28-wq/Personal-Knowledge-Assistant)  
+**Copyright:** © 2026 JAGAN T. JIJU. All Rights Reserved.  
+**License:** MIT License  
+
 ---
 
 ### **ABSTRACT**

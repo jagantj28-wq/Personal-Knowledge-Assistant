@@ -53,11 +53,14 @@ export default function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-slate-700">
+      <div className="p-4 border-t border-slate-700 space-y-1.5">
         <div className="flex items-center gap-2 text-xs text-slate-400">
           <Zap size={12} className="text-yellow-400" />
           <span>Gemini & Hybrid RAG</span>
         </div>
+        <p className="text-[11px] text-slate-500 font-medium">
+          © 2026 JAGAN T. JIJU
+        </p>
       </div>
     </aside>
   )

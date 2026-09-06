@@ -10,6 +10,7 @@
 ![Google Gemini](https://img.shields.io/badge/Google_Gemini-1.5_Flash-4285F4?style=for-the-badge&logo=google)
 ![FAISS](https://img.shields.io/badge/FAISS-Vector_Search-orange?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)
+![Author](https://img.shields.io/badge/Author-JAGAN%20T.%20JIJU-blueviolet?style=for-the-badge)
 
 **An academic and portfolio-grade multi-modal AI personal knowledge base and "Second Brain" combining Hybrid Retrieval-Augmented Generation (RAG), Cognitive Spaced Repetition (SuperMemo SM-2), Knowledge Graphs, and AI Assessment Quizzes.**
 
@@ -206,6 +207,16 @@ Validates chunking boundaries, $L_2$ vector normalization, cosine top-match retr
 
 ---
 
-## 📄 License
+## 📄 License & Copyright
 
-This project is licensed under the MIT License — free for academic, personal, and research use.
+Copyright © 2026 **JAGAN T. JIJU**. All rights reserved.
+
+Licensed under the [MIT License](LICENSE) — free for academic, personal, and research use.
+
+---
+
+<div align="center">
+
+Designed & Developed with ❤️ by **[JAGAN T. JIJU](https://github.com/jagantj28-wq)**
+
+</div>

@@ -3,11 +3,12 @@ FastAPI application entry point for the Personal Knowledge Assistant.
 """
 import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from pathlib import Path
+from fastapi.responses import FileResponse
 
 from config import settings
 from models.database import init_db
@@ -19,6 +20,8 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
 logger = logging.getLogger(__name__)
+
+static_dir = Path(__file__).parent / "static"
 
 
 @asynccontextmanager
@@ -45,7 +48,7 @@ app = FastAPI(
 # ─── CORS ──────────────────────────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -62,16 +65,6 @@ app.include_router(quiz.router, prefix="/api/quiz", tags=["Quiz & Evaluation"])
 app.include_router(seed.router, prefix="/api/seed", tags=["Demo Seed"])
 
 
-@app.get("/", tags=["Health"])
-async def root():
-    return {
-        "message": "Personal Knowledge Assistant API",
-        "version": settings.app_version,
-        "docs": "/docs",
-        "gemini_active": is_gemini_active(),
-    }
-
-
 @app.get("/api/health", tags=["Health"])
 async def health():
     from services.embeddings import get_index_stats
@@ -82,3 +75,40 @@ async def health():
         "gemini_active": is_gemini_active(),
         "vector_store": stats,
     }
+
+
+# ─── Unified SPA / Static Frontend Serving ─────────────────────────────────────
+if static_dir.exists():
+    assets_dir = static_dir / "assets"
+    if assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_spa(full_path: str):
+        # Don't hijack API routes if they 404
+        if full_path.startswith("api/"):
+            return {"error": "API route not found", "path": full_path}
+
+        target_file = static_dir / full_path
+        if full_path and target_file.exists() and target_file.is_file():
+            return FileResponse(target_file)
+
+        index_file = static_dir / "index.html"
+        if index_file.exists():
+            return FileResponse(index_file)
+
+        return {
+            "message": "Personal Knowledge Assistant API",
+            "version": settings.app_version,
+            "docs": "/docs",
+            "gemini_active": is_gemini_active(),
+        }
+else:
+    @app.get("/", tags=["Health"])
+    async def root():
+        return {
+            "message": "Personal Knowledge Assistant API",
+            "version": settings.app_version,
+            "docs": "/docs",
+            "gemini_active": is_gemini_active(),
+        }
